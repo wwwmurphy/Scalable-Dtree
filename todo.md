@@ -1,10 +1,6 @@
 
 
 ToDo:
-- During test or predict, skip records that dont have an attribute in tree.
-  Problem can usually be replicated by building a tree with one size dataset
-  and testing with a larger dataset.
-
 - Bug, or maybe design deficiency:
 ./test-dtree.py test/cen1k.txt test/cen1k.dtree
 Traceback (most recent call last):

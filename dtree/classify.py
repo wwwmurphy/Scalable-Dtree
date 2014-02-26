@@ -13,7 +13,11 @@ def get_class(record, node):
     # Leaf nodes are of type string. Traverse tree until leaf node found.
     while type(node) != type(" "):
         attr = node.keys()[0]
-        node = node[attr][record[attr]]
+        attr_val = record[attr]
+        try:
+            node = node[attr][attr_val]
+        except KeyError:   # A test record could have an attribute
+            return None    # value not classifiable by the tree.
     return node
 
 
