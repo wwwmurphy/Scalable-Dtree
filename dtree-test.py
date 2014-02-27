@@ -15,15 +15,13 @@ if __name__ == "__main__":
     """
 
     clparser = argparse.ArgumentParser()
-    clparser.add_argument(dest='filename_testdata',
-                          help='test data filename')
     clparser.add_argument(dest='filename_dtree',
                           help='decision tree filename')
+    clparser.add_argument(dest='filename_testdata',
+                          help='test data filename')
     clparser.add_argument('-v', '--verbose', action='store_true', 
                           dest='verbose_flag', default=False,
                           help='More verbose status info.')
-    clparser.add_argument('-c', '--cut', dest='cut_list', default="",
-                          help='Fields to drop from each record.')
 
     args = clparser.parse_args()
 
@@ -35,6 +33,7 @@ if __name__ == "__main__":
 
     attributes = pickle.load(fd)
     target_attr = pickle.load(fd)
+    drop_list = pickle.load(fd)
     tree = pickle.load(fd)
     fd.close()
 
@@ -45,8 +44,8 @@ if __name__ == "__main__":
                          % args.filename_testdata)
         sys.exit(0)
 
-    tdata, attributes, target_attr = prepare_data(fd_td,
-                       args.cut_list, args.verbose_flag)
+    tdata, attributes, target_attr = prepare_data(fd_td, drop_list,
+                                                  args.verbose_flag)
     fd_td.close()
 
     if args.verbose_flag == True:

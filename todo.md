@@ -2,10 +2,11 @@
 
 ToDo:
 -----
-- store cut_list in the pickled dtree. Remove -c from test-dtree.py
 - allow target attribute to not be at end; specify with index.
+
 - write program 'dtree-info' to report tree characteristics.
 - write program 'dtree-sub' to extract subtrees.
+
 - port to hadoop.
 - refactor tree building to be scalable in map-reduce
 - add features from C4.5
@@ -19,6 +20,8 @@ Feb 26, 2014
 - Fix key error produced during tree testing where dictionary True and False values counted.
 - rename learn-dtree.py -> dtree-learn.py; test-dtree.py -> dtree-test.py;
   predict-dtree.py -> dtree-predict.py; tree2graph.py -> dtree2graph.py
+- store cut_list in the pickled dtree. Remove -c from test-dtree.py
+- Clean up cmdline args, when 2 filenames appear put dtree filename first
 
 Jan 23, 2014
 - Evaluate separating initial node processing from

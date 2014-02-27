@@ -7,7 +7,7 @@
 
 import sys
 
-def prepare_data(fd, cut_list, verbose, learn=True):
+def prepare_data(fd, drop_list, verbose, learn=True):
     """
     Parse CSV input data.
     The first line is taken to be the attribute labels and the last label,
@@ -21,10 +21,6 @@ def prepare_data(fd, cut_list, verbose, learn=True):
         the target attribute. 
     Return a list giving prepared data, attribute list and target attribute.
     """
-
-    drop_list = []
-    if len(cut_list) > 0:
-        drop_list = [int(item) for item in cut_list.split(',')]
 
     # Read first line from data file. It is taken to be the 
     # column header, aka: the Decision Tree Attributes.

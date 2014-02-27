@@ -18,22 +18,22 @@ if __name__ == "__main__":
     starttime = datetime.now()
 
     clparser = argparse.ArgumentParser()
+    clparser.add_argument(dest='filename_traindata',
+                          help='training data filename')
+    clparser.add_argument('-c', '--cut', dest='cut_list', default="",
+                          help='Fields to drop from each record.')
     clparser.add_argument('-g', '--graphviz',  action='store_true',
                           dest='gv_flag', default=False,
                           help='enable graphviz-formatted tree output')
-    clparser.add_argument(dest='filename_traindata',
-                          help='training data filename')
     clparser.add_argument('-n', '--notree', action='store_true',
                           dest='notree_flag', default='False',
                           help="Validate data, don't build tree")
-    clparser.add_argument('-v', '--verbose', action='store_true', 
-                          dest='verbose_flag', default=False,
-                          help='More verbose status info.')
-    clparser.add_argument('-c', '--cut', dest='cut_list', default="",
-                          help='Fields to drop from each record.')
     clparser.add_argument('-t', '--tree-write', action='store_true', 
                           dest='pickle_flag', default="False",
                           help='Save tree to file.')
+    clparser.add_argument('-v', '--verbose', action='store_true', 
+                          dest='verbose_flag', default=False,
+                          help='More verbose status info.')
 
     args = clparser.parse_args()
 
@@ -45,8 +45,11 @@ if __name__ == "__main__":
                          args.filename_traindata)
         sys.exit(0)
 
+    drop_list = []
+    if len(args.cut_list) > 0:
+        drop_list = [int(item) for item in args.cut_list.split(',')]
     data, attributes, target_attr = \
-               prepare_data(fd, args.cut_list, args.verbose_flag)
+               prepare_data(fd, drop_list, args.verbose_flag)
     fd.close()
 
     if args.verbose_flag == True:
@@ -88,6 +91,7 @@ if __name__ == "__main__":
         # Pickle the tree using highest protocol available.
         pickle.dump(attributes, fout, pickle.HIGHEST_PROTOCOL)
         pickle.dump(target_attr, fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(drop_list, fout, pickle.HIGHEST_PROTOCOL)
         pickle.dump(tree, fout, pickle.HIGHEST_PROTOCOL)
         fout.close()
 

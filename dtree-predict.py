@@ -56,19 +56,19 @@ if __name__ == "__main__":
     """
 
     clparser = argparse.ArgumentParser()
-    clparser.add_argument(dest='filename_predict',
-                          help='File holding data needing predictions')
     clparser.add_argument(dest='filename_dtree',
                           help='Decision tree filename')
+    clparser.add_argument(dest='filename_predict',
+                          help='File holding data needing predictions')
+    clparser.add_argument('-r', '--results', dest='results_flag', 
+                          action='store_true', default=False,
+                          help='Give results to stdout as a list.')
     clparser.add_argument('-v', '--verbose', action='store_true', 
                           dest='verbose_flag', default=False,
                           help='More verbose status info.')
     clparser.add_argument('-w', '--write', dest='write_flag', 
                           action='store_true', default=False,
                           help='Write file with prediction result per record.')
-    clparser.add_argument('-r', '--results', dest='results_flag', 
-                          action='store_true', default=False,
-                          help='Give results to stdout as a list.')
 
     args = clparser.parse_args()
 
@@ -81,6 +81,7 @@ if __name__ == "__main__":
 
     attributes_dt = pickle.load(fd_dt)
     target_attr = pickle.load(fd_dt)
+    drop_list = pickle.load(fd)
     tree = pickle.load(fd_dt)
     fd_dt.close()
 
