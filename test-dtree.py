@@ -55,11 +55,17 @@ if __name__ == "__main__":
     results = classify(tree, tdata)
     res_map = map(lambda j,k: j==k[target_attr], results, tdata)
     sums = dict(Counter(res_map).most_common(2))
-    total_recs = sums[True] + sums[False]
+    sum_true = 0
+    sum_false = 0
+    if True in sums:
+        sum_true = sums[True]
+    if False in sums:
+        sum_false = sums[False]
+    total_recs = sum_true + sum_false
     print "Total record count: %d" % total_recs
     print "Correct predictions: %0.3f%%(%0.3f%%)" % \
-          (float(100 * sums[True])  / float(total_recs),
-           float(100 * sums[False]) / float(total_recs))
+          (float(100 * sum_true)  / float(total_recs),
+           float(100 * sum_false) / float(total_recs))
 
     if args.verbose_flag == True:
         bad_recs = map(lambda m,n: (n+1) if m==False else True, res_map, 

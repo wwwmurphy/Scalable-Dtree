@@ -1,13 +1,7 @@
 
 
 ToDo:
-- Bug, or maybe design deficiency:
-./test-dtree.py test/cen1k.txt test/cen1k.dtree
-Traceback (most recent call last):
-  File "./test-dtree.py", line 59, in <module>
-    total_recs = sums[True] + sums[False]
-KeyError: False
-
+-----
 - port to hadoop.
 - refactor tree building to be scalable in map-reduce
 - add features from C4.5
@@ -15,6 +9,11 @@ KeyError: False
 
 
 Done:
+-----
+Feb 26, 2014
+- Account for a classification record not having a particular attribute.
+- Fix key error produced during tree testing where dictionary True and False values counted.
+
 Jan 23, 2014
 - Evaluate separating initial node processing from
   work_list processing. Decided not to do it.
