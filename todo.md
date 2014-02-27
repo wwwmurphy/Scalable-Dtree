@@ -2,6 +2,10 @@
 
 ToDo:
 -----
+- store cut_list in the pickled dtree.
+- allow target attribute to not be at end; specify with index.
+- write program 'dtree-info' to report tree characteristics.
+- write program 'dtree-sub' to extract subtrees.
 - port to hadoop.
 - refactor tree building to be scalable in map-reduce
 - add features from C4.5
