@@ -16,6 +16,12 @@ if __name__ == "__main__":
     clparser.add_argument(dest='filename_dtree',help='decision tree filename')
     clparser.add_argument('-c', '--console',action='store_true',default=False,
                        dest='stdout_flag',help='Send graph output to STDOUT.')
+    clparser.add_argument('-a', '--attr-collapse',action='store_true',
+                       default=False, dest='attr_collapse_flag',
+                       help='Collapse multiple attribute values between same '\
+                       'nodes. Can make an impossibly large graph possible to '\
+                       'render albeit by stripping out a lot of useful '\
+                       'information.')
     args = clparser.parse_args()
 
     try:
@@ -44,6 +50,6 @@ if __name__ == "__main__":
             sys.stderr.write("Error: Unable to create '%s' file.\n" % fname_gv)
             sys.exit(0)
 
-    print_tree_gv(tree, fout, "dtree ")
+    print_tree_gv(tree, fout, args.attr_collapse_flag, "dtree ")
 
     fout.close()
