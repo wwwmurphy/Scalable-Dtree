@@ -1,5 +1,4 @@
 
-
 ToDo:
 -----
 - allow target attribute to not be at end; specify with index.
@@ -15,6 +14,9 @@ ToDo:
 
 Done:
 -----
+Mar 9, 2014
+- Modify dtree pickle format to show the full list of attributes including those dropped.
+
 Feb 26, 2014
 - Account for a classification record not having a particular attribute.
 - Fix key error produced during tree testing where dictionary True and False values counted.

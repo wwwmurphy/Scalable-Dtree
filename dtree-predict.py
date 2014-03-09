@@ -80,8 +80,9 @@ if __name__ == "__main__":
         sys.exit(0)
 
     attributes_dt = pickle.load(fd_dt)
-    target_attr = pickle.load(fd_dt)
+    attributes_orig = pickle.load(fd_dt)
     drop_list = pickle.load(fd)
+    target_attr = pickle.load(fd_dt)
     tree = pickle.load(fd_dt)
     fd_dt.close()
 

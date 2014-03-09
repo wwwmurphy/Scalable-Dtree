@@ -31,8 +31,9 @@ if __name__ == "__main__":
         sys.exit(0)
 
     attributes = pickle.load(fd)
-    target_attr = pickle.load(fd)
+    attributes_orig = pickle.load(fd)
     drop_list = pickle.load(fd)
+    target_attr = pickle.load(fd)
     tree = pickle.load(fd)
     fd.close()
 

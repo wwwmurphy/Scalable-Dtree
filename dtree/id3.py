@@ -9,8 +9,8 @@ import math
 
 
 def entropy(data, attr): 
-    """ 
-    Calculates entropy of the given data set for given attribute. 
+    """
+    Calculates shannon entropy of the given data set for given attribute. 
     The data set coming in here is typically a subset of the full data.
     In information theory, entropy is a measure of the uncertainty in a
     random variable. In this context, the term usually refers to the 
@@ -23,7 +23,7 @@ def entropy(data, attr):
     is based on the Markov model of text. For an order-0 source (each
     character is selected independent of the last characters), the
     binary entropy is: H(S)= -sum( prob_i * log_2(prob_i) )
-    """ 
+    """
 
     # Count the frequency of values within a given 
     # attribute for this data subset.

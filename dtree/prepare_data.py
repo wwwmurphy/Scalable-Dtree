@@ -26,7 +26,8 @@ def prepare_data(fd, drop_list, verbose, learn=True):
     # column header, aka: the Decision Tree Attributes.
     firstline = fd.readline().strip()
 
-    attributes = [attr.strip() for attr in firstline.split(",")]
+    attributes_orig = [attr.strip() for attr in firstline.split(",")]
+    attributes = attributes_orig[:]
     num_attributes = len(attributes)
 
     if verbose == True:
@@ -35,7 +36,7 @@ def prepare_data(fd, drop_list, verbose, learn=True):
         sys.stderr.write("Attribute DropList: %s\n" % drop_list)
 
     if len(drop_list) > 0:
-        attributes = drop_fields(attributes, drop_list)
+        attributes = drop_fields(attributes_orig, drop_list)
         num_attributes = len(attributes)
         if verbose == True:
             sys.stderr.write("New Attribute count: %s\n" % num_attributes)
@@ -57,7 +58,7 @@ def prepare_data(fd, drop_list, verbose, learn=True):
     data = []
     num_records = 0
     num_bad = 0
-    if learn is True:  # Path for 'learn' function
+    if learn:   # Path for 'learn' function
         for line in lines:
             line = line.strip().rstrip(',')
             if len(line) == 0:
@@ -70,7 +71,7 @@ def prepare_data(fd, drop_list, verbose, learn=True):
                 print "Record #%d is malformed." % (num_records + 1)
                 continue
             data.append(dict(zip(attributes, fields)))
-    else:              # Path for 'predict' function
+    else:       # Path for 'predict' function
         for line in lines:
             line = line.strip().rstrip(',')
             if len(line) == 0:
@@ -91,16 +92,17 @@ def prepare_data(fd, drop_list, verbose, learn=True):
                          % (num_records, num_bad))
         sys.stderr.write("Attribute to predict: %s\n" % target_attr)
 
-    return [data, attributes, target_attr]
+    return [data, attributes, attributes_orig, target_attr]
 
 
 def drop_fields(fields, drop_list):
+    newfields = fields[:]
     if len(drop_list) == 0:
-        return fields
-    nfields = len(fields)
+        return newfields
+    nfields = len(newfields)
     for i in range(nfields):
         if (i+1) in drop_list:
-            fields[i] = None
-    keep_list = filter(lambda i: fields[i] != None, range(nfields)) 
-    return map(lambda i: fields[i], keep_list) 
+            newfields[i] = None
+    keep_list = filter(lambda i: newfields[i] != None, range(nfields)) 
+    return map(lambda i: newfields[i], keep_list) 
 

@@ -48,7 +48,7 @@ if __name__ == "__main__":
     drop_list = []
     if len(args.cut_list) > 0:
         drop_list = [int(item) for item in args.cut_list.split(',')]
-    data, attributes, target_attr = \
+    data, attributes, attributes_orig, target_attr = \
                prepare_data(fd, drop_list, args.verbose_flag)
     fd.close()
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         except IOError:
             sys.stderr.write("Error: Unable to create '%s' file.\n" % fname_gv)
             sys.exit(0)
-        print_tree_gv(tree, fout, "dtree ")
+        print_tree_gv(tree, fout, False, "dtree ")
 
     # Dump decision tree to a pickle file.
     if args.pickle_flag:
@@ -89,10 +89,11 @@ if __name__ == "__main__":
                              % fname_tree)
             sys.exit(0)
         # Pickle the tree using highest protocol available.
-        pickle.dump(attributes, fout, pickle.HIGHEST_PROTOCOL)
-        pickle.dump(target_attr, fout, pickle.HIGHEST_PROTOCOL)
-        pickle.dump(drop_list, fout, pickle.HIGHEST_PROTOCOL)
-        pickle.dump(tree, fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(attributes,      fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(attributes_orig, fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(drop_list,       fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(target_attr,     fout, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(tree,            fout, pickle.HIGHEST_PROTOCOL)
         fout.close()
 
     if args.verbose_flag == True:
