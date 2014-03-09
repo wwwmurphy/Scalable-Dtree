@@ -2,8 +2,6 @@
 ToDo:
 -----
 - allow target attribute to not be at end; specify with index.
-
-- write program 'dtree-info' to report tree characteristics.
 - write program 'dtree-sub' to extract subtrees.
 
 - port to hadoop.
@@ -15,11 +13,16 @@ ToDo:
 Done:
 -----
 Mar 9, 2014
-- Modify dtree pickle format to show the full list of attributes including those dropped.
+- Created program 'dtree-info'. Shows many dtree characteristics.
+  Particularly useful when the tree is very big and therefore hard to 
+  dump or render.
+- Modify dtree pickle format to show the full list of attributes including 
+  those that are dropped.
 
 Feb 26, 2014
 - Account for a classification record not having a particular attribute.
-- Fix key error produced during tree testing where dictionary True and False values counted.
+- Fix key error produced during tree testing where dictionary True and 
+  False values counted.
 - rename learn-dtree.py -> dtree-learn.py; test-dtree.py -> dtree-test.py;
   predict-dtree.py -> dtree-predict.py; tree2graph.py -> dtree2graph.py
 - store cut_list in the pickled dtree. Remove -c from test-dtree.py
