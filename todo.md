@@ -2,6 +2,7 @@
 ToDo:
 -----
 - allow target attribute to not be at end; specify with index.
+- have generated '.dtree' file be located in cwd, not in location of training data.
 - write program 'dtree-sub' to extract subtrees.
 
 - port to hadoop.
@@ -12,6 +13,8 @@ ToDo:
 
 Done:
 -----
+Mar 13, 2014
+- Fix 'tree-info' to handle trivial 1x1 tree.
 Mar 9, 2014
 - Created program 'dtree-info'. Shows many dtree characteristics.
   Particularly useful when the tree is very big and therefore hard to 

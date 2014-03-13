@@ -51,6 +51,9 @@ def tree_list_rows(tree):
         deep += 1
         if deep not in rows:
             rows[deep] = []
+        if type(node) == type(""):
+            rows[deep].append(node)
+            return
         for item in node.values()[0].values():
             if type(item) == dict:
                 rows[deep].append(item.keys()[0])
@@ -61,7 +64,10 @@ def tree_list_rows(tree):
 
     rows = {}
     deep = 0
-    rows[deep] = [tree.keys()[0]]
+    if type(tree) == dict:
+        rows[deep] = [tree.keys()[0]]
+    else:
+        rows[deep] = [tree]
     tree_list_rows_r(tree, rows, deep)
 
     # Remove leaf nodes from all but the last row.
@@ -73,7 +79,7 @@ def tree_list_rows(tree):
 
     # Promote all nodes to be as high in the geometry as they can be
     # (except leaves). Remove node duplicates found at lower levels.
-    if len(rows) <= 2:
+    if len(rows) < 2:
         return rows
     for r in range(len(rows)-1):
         keepthese = rows[r]
@@ -149,7 +155,10 @@ if __name__ == "__main__":
             print "%d more attributes:\n  %s" % (len_dl, dropped_attrs)
 
     print "Node Names."
-    print "    Root Attribute- \"%s\"" % tree.keys()[0]
+    if type(tree) == dict:
+        print "    Root Attribute- \"%s\"" % tree.keys()[0]
+    else:
+        print "    Root Attribute- \"%s\"" % tree
     print "  Target Attribute- \"%s\"" % target_attr
 
     nodes, leaves, leaf_names = tree_stats(tree)
