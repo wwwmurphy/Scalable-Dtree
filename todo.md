@@ -1,9 +1,7 @@
-
 ToDo:
 -----
 - allow target attribute to not be at end; specify with index.
 - have generated '.dtree' file be located in cwd, not in location of training data.
-- write program 'dtree-sub' to extract subtrees.
 
 - port to hadoop.
 - refactor tree building to be scalable in map-reduce
