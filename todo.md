@@ -14,6 +14,9 @@ ToDo:
 Done:
 -----
 Mar 13, 2014
+- Created program 'dtree-sub' to extract a subtree from larger tree 
+  starting at specified node name. New pickle file is written and all
+  pickle file header info is kept.
 - Fix 'tree-info' to handle trivial 1x1 tree.
 Mar 9, 2014
 - Created program 'dtree-info'. Shows many dtree characteristics.
