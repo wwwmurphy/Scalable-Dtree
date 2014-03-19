@@ -1,6 +1,6 @@
 #!/bin/python
 
-import sys, argparse, pickle
+import os, sys, argparse, pickle
 
 subtree = None
 
@@ -38,12 +38,12 @@ if __name__ == "__main__":
 
     clparser = argparse.ArgumentParser(
                description='Extract sub-tree from larger dtree.')
-    clparser.add_argument(dest='filename_dtree',help='decision tree filename')
+    clparser.add_argument(dest='filename_dtree',help='Decision tree filename')
     clparser.add_argument(dest='node_start',
                           help='Node in source dtree that will be the root '\
                           'of the extracted subtree.')
     clparser.add_argument(dest='filename_subtree',
-                          help='sub decision tree filename')
+                          help='Sub Decision Tree Filename')
     args = clparser.parse_args()
 
     try:
@@ -54,6 +54,7 @@ if __name__ == "__main__":
 
     attributes = pickle.load(fd)
     attributes_orig = pickle.load(fd)
+    targ_attr_idx = pickle.load(fd)
     drop_list = pickle.load(fd)
     target_attr = pickle.load(fd)
     tree = pickle.load(fd)
@@ -66,7 +67,8 @@ if __name__ == "__main__":
         print "Tree Node Not Found"
         sys.exit(1)
 
-    fdtree = args.filename_subtree.split(".")
+    filename_base = os.path.basename(args.filename_subtree)
+    fdtree = filename_base.split(".")
     if len(fdtree) <= 1:
         fdtree.append("")
     fdtree[-1] = "dtree"
@@ -82,6 +84,7 @@ if __name__ == "__main__":
     # Pickle the tree using highest protocol available.
     pickle.dump(attributes,      fout, pickle.HIGHEST_PROTOCOL)
     pickle.dump(attributes_orig, fout, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(targ_attr_idx,   fout, pickle.HIGHEST_PROTOCOL)
     pickle.dump(drop_list,       fout, pickle.HIGHEST_PROTOCOL)
     pickle.dump(target_attr,     fout, pickle.HIGHEST_PROTOCOL)
     pickle.dump(subtree,         fout, pickle.HIGHEST_PROTOCOL)

@@ -1,16 +1,16 @@
 ToDo:
 -----
-- allow target attribute to not be at end; specify with index.
-- have generated '.dtree' file be located in cwd, not in location of training data.
-
-- port to hadoop.
-- refactor tree building to be scalable in map-reduce
-- add features from C4.5
+- Port to MRJOB.
+- Refactor tree building to be scalable in map-reduce
+- Add features from C4.5
 - Control GUI ??
-
 
 Done:
 -----
+Mar 18, 2014
+- Allow target attribute to be any one; specified with an index.
+- Have generated '.dtree' file be located in cwd, not in location of training data.
+- Some refactoring.
 Mar 13, 2014
 - Created program 'dtree-sub' to extract a subtree from larger tree 
   starting at specified node name. New pickle file is written and all
@@ -27,9 +27,9 @@ Feb 26, 2014
 - Account for a classification record not having a particular attribute.
 - Fix key error produced during tree testing where dictionary True and 
   False values counted.
-- rename learn-dtree.py -> dtree-learn.py; test-dtree.py -> dtree-test.py;
+- Rename learn-dtree.py -> dtree-learn.py; test-dtree.py -> dtree-test.py;
   predict-dtree.py -> dtree-predict.py; tree2graph.py -> dtree2graph.py
-- store cut_list in the pickled dtree. Remove -c from test-dtree.py
+- Store cut_list in the pickled dtree. Remove -c from test-dtree.py
 - Clean up cmdline args, when 2 filenames appear put dtree filename first
 
 Jan 23, 2014

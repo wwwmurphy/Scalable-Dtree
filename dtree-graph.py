@@ -1,7 +1,7 @@
 #!/bin/python
 
 from dtree import print_tree_gv
-import sys, argparse, pickle
+import os, sys, argparse, pickle
 
 
 if __name__ == "__main__":
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     clparser = argparse.ArgumentParser(
                description='Transform tree file to GraphViz command file.'
                            ' Try: "dot -Tpdf -O file.gv"')
-    clparser.add_argument(dest='filename_dtree',help='decision tree filename')
+    clparser.add_argument(dest='filename_dtree',help='Decision tree filename')
     clparser.add_argument('-c', '--console',action='store_true',default=False,
                        dest='stdout_flag',help='Send graph output to STDOUT.')
     clparser.add_argument('-a', '--attr-collapse',action='store_true',
@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
     attributes = pickle.load(fd)
     attributes_orig = pickle.load(fd)
+    targ_attr_idx = pickle.load(fd)
     drop_list = pickle.load(fd)
     target_attr = pickle.load(fd)
     tree = pickle.load(fd)
@@ -41,7 +42,8 @@ if __name__ == "__main__":
         fout = sys.stdout
     else:
         try:
-            fdtree = args.filename_dtree.split(".")
+            filename_base = os.path.basename(args.filename_dtree)
+            fdtree = filename_base.split(".")
             if len(fdtree) <= 1:
                 fdtree.append("")
             fdtree[-1] = "gv"

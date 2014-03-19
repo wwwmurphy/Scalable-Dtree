@@ -1,17 +1,18 @@
 """
     Parse CSV input data.
-    The first line is taken to be the attribute labels and the last label,
-    the last column, is the target attribute.
+    The first line is taken to be the attribute labels.
     Return a list giving the prepared data, attribute list and target attribute.
 """
 
 import sys
 
-def prepare_data(fd, drop_list, verbose, learn=True):
+def prepare_data(fd, drop_list, targ_attr_idx, verbose, learn=True):
     """
     Parse CSV input data.
-    The first line is taken to be the attribute labels and the last label,
-    the last column, is the target attribute.
+    The first line is taken to be the attribute labels.
+    The target attribute is among those labels and is designated 
+    with a target attribute index. Indexing can be Pythonic, 
+    eg: the last attribute can be specified with index -1.
     If 'learn' is True, 
         prepare full records for decision tree building.
     If 'learn' is False, 
@@ -25,66 +26,57 @@ def prepare_data(fd, drop_list, verbose, learn=True):
     # Read first line from data file. It is taken to be the 
     # column header, aka: the Decision Tree Attributes.
     firstline = fd.readline().strip()
-
     attributes_orig = [attr.strip() for attr in firstline.split(",")]
-    attributes = attributes_orig[:]
+
+    # Get target attribute. targ_attr_idx can use pythonic relative addressing
+    try:
+        target_attr = attributes_orig[targ_attr_idx]
+    except:
+        sys.stderr.write("Error in Index of Attribute to predict: %d\n" %\
+                         targ_attr_idx)
+        sys.exit(1)
+
+    targ_attr_idx_norm = attributes_orig.index(target_attr) + 1
+
+    if verbose == True:
+        sys.stderr.write("Initial Attribute count: %s\n" % len(attributes_orig))
+        sys.stderr.write("Initial Attribute list:\n%s\n" % attributes_orig)
+        sys.stderr.write("Target Attribute index: %d\n" % targ_attr_idx_norm)
+        sys.stderr.write("Attribute DropList: %s\n" % drop_list)
+
+    if learn is False:
+        # Remove predict attribute from attr list by adding to drop list.
+        drop_list.append(targ_attr_idx_norm)
+
+    attributes = drop_fields(attributes_orig, drop_list)
     num_attributes = len(attributes)
 
     if verbose == True:
-        sys.stderr.write("Initial Attribute count: %s\n" % num_attributes)
-        sys.stderr.write("Initial Attribute list:\n%s\n" % attributes)
-        sys.stderr.write("Attribute DropList: %s\n" % drop_list)
-
-    if len(drop_list) > 0:
-        attributes = drop_fields(attributes_orig, drop_list)
-        num_attributes = len(attributes)
-        if verbose == True:
-            sys.stderr.write("New Attribute count: %s\n" % num_attributes)
-            sys.stderr.write("New Attribute list:\n%s\n" % attributes)
-
-    # Last header field is target attribute.
-    target_attr = attributes[-1]
+        sys.stderr.write("New Attribute count: %s\n" % num_attributes)
+        sys.stderr.write("New Attribute list:\n%s\n" % attributes)
 
     # Create list of all lines from data file
     lines = [line.strip() for line in fd.readlines()]
 
-    if learn is False:
-        # remove last attribute for this next step
-        del(attributes[-1])
-        num_attributes = num_attributes - 1
-
     # Label every field in every data record by creating field:value tuples.
-    # When 'learn' is False, the target attribute value will be None.
+    # When in 'predict' mode, the target attribute value will be None.
     data = []
     num_records = 0
     num_bad = 0
-    if learn:   # Path for 'learn' function
-        for line in lines:
-            line = line.strip().rstrip(',')
-            if len(line) == 0:
-                continue  # allow blank lines
-            num_records = num_records + 1
-            fields = [field.strip() for field in line.split(",")]
-            fields = drop_fields(fields, drop_list)
-            if len(fields) != num_attributes:
-                num_bad = num_bad + 1
-                print "Record #%d is malformed." % (num_records + 1)
-                continue
-            data.append(dict(zip(attributes, fields)))
-    else:       # Path for 'predict' function
-        for line in lines:
-            line = line.strip().rstrip(',')
-            if len(line) == 0:
-                continue  # allow blank lines
-            num_records = num_records + 1
-            fields = [field.strip() for field in line.split(",")]
-            fields = drop_fields(fields, drop_list)
-            if len(fields) != num_attributes:
-                num_bad = num_bad + 1
-                print "Record #%d is malformed." % (num_records + 1)
-                continue
-            fields.append(None) # placeholder for attribute to be predicted
-            data.append(dict(zip(attributes, fields)))
+    fields_g = []
+    for line in lines:
+        line = line.strip().rstrip(',')
+        if len(line) == 0:
+            continue  # allow blank lines
+        num_records = num_records + 1
+        fields = [field.strip() for field in line.split(",")]
+        fields = drop_fields(fields, drop_list)
+        if len(fields) != num_attributes:
+            num_bad = num_bad + 1
+            print "Record #%d is malformed." % (num_records + 1)
+            continue
+        data.append(dict(zip(attributes, fields)))
+        fields_g = fields
 
     if verbose == True:
         sys.stderr.write("Number of records used: %s\n"
@@ -95,6 +87,7 @@ def prepare_data(fd, drop_list, verbose, learn=True):
     return [data, attributes, attributes_orig, target_attr]
 
 
+# Drop list indices are based on 1.
 def drop_fields(fields, drop_list):
     newfields = fields[:]
     if len(drop_list) == 0:

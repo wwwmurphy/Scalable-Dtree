@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
     clparser = argparse.ArgumentParser(
                description='Report decision tree characteristics.')
-    clparser.add_argument(dest='filename_dtree',help='decision tree filename')
+    clparser.add_argument(dest='filename_dtree',help='Decision tree filename')
     clparser.add_argument('-d','--depth', dest='depth_value',
                        help='Dump node names across a given depth. 0 dumps ' +\
                        'all; give integer to select specific row, root is 1.')
@@ -122,6 +122,7 @@ if __name__ == "__main__":
 
     attributes = pickle.load(fd)
     attributes_orig = pickle.load(fd)
+    targ_attr_idx = pickle.load(fd)
     drop_list = pickle.load(fd)
     target_attr = pickle.load(fd)
     tree = pickle.load(fd)

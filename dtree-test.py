@@ -16,9 +16,9 @@ if __name__ == "__main__":
 
     clparser = argparse.ArgumentParser()
     clparser.add_argument(dest='filename_dtree',
-                          help='decision tree filename')
+                          help='Decision tree filename')
     clparser.add_argument(dest='filename_testdata',
-                          help='test data filename')
+                          help='Test data filename')
     clparser.add_argument('-v', '--verbose', action='store_true', 
                           dest='verbose_flag', default=False,
                           help='More verbose status info.')
@@ -33,6 +33,7 @@ if __name__ == "__main__":
 
     attributes = pickle.load(fd)
     attributes_orig = pickle.load(fd)
+    targ_attr_idx = pickle.load(fd)
     drop_list = pickle.load(fd)
     target_attr = pickle.load(fd)
     tree = pickle.load(fd)
@@ -45,13 +46,14 @@ if __name__ == "__main__":
                          % args.filename_testdata)
         sys.exit(0)
 
-    tdata, attributes, target_attr = prepare_data(fd_td, drop_list,
-                                                  args.verbose_flag)
+    tdata, attributes, ignore_attr_orig, ignore_targ_attr = \
+        prepare_data(fd_td, drop_list, targ_attr_idx, args.verbose_flag)
     fd_td.close()
 
     if args.verbose_flag == True:
         sys.stderr.write("Test data read and prepared.\n")
 
+    # make a list of predictions, one per tdata record
     results = classify(tree, tdata)
     res_map = map(lambda j,k: j==k[target_attr], results, tdata)
     sums = dict(Counter(res_map).most_common(2))
